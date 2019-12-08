@@ -23,5 +23,17 @@ namespace BookletRazer.Pages.BookList
         {
             Books = await _db.Book.ToListAsync();
         }
+
+        public async Task<IActionResult> OnPostDelete(int id)
+        {
+            var bookToDelete =await _db.Book.FindAsync(id);
+            if (bookToDelete == null)
+            {
+                return NotFound();
+            }
+            _db.Book.Remove(bookToDelete);
+            await _db.SaveChangesAsync();
+            return RedirectToPage("Index");
+        }
     }
 }
